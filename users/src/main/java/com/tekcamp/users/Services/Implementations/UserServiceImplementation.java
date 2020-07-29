@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +28,28 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public List<User> getAllUsers(int page, int limit) {
+	public List<UserDto> getAllUsers(int page, int limit) {
 		
-		List<User> returnValue; 
+		List<User> userList = new ArrayList<User>(); 
 		
 		if (page>0) page --; 
 		PageRequest pageableRequest = PageRequest.of(page, limit); 
 		
-		Page<User> userPage =  userRepository.findAll(pageableRequest);
+		Page<User> userPageList = userRepository.findAll(pageableRequest);
 		
-		returnValue = userPage.getContent();
+		userList = userPageList.getContent(); 
 		
-		return returnValue;
+		
+		List<UserDto> userDtoList = new ArrayList<UserDto>(); 
+		
+		for ( int i = 0; i<userList.size(); i++ ) {
+			UserDto userDto = new UserDto(); 
+			BeanUtils.copyProperties(userList.get(i), userDto);
+			userDtoList.add(userDto); 
+		}
+		
+		
+		return userDtoList;
 	}
 
 	@Override
