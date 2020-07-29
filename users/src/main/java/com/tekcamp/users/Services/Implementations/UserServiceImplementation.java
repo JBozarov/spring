@@ -35,10 +35,21 @@ public class UserServiceImplementation implements UserServices {
 	@Override
 	public void createUser(User user) {
 		userRepository.save(user); 
+	}
+
+	@Override
+	public void updateUser(User user) {
+		ArrayList<User> users = (ArrayList<User>) userRepository.findAll(); 
+		for (int i = 0; i<users.size(); i++ ) {
+			if (users.get(i).getId() == user.getId()) {
+				userRepository.save(user); 
+			}
+		}
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
 	} 
-	
-	
-	
-	
 	
 }
