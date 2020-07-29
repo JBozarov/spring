@@ -4,21 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.tekcamp.users.Dto.UserDto;
 import com.tekcamp.users.Model.User;
 import com.tekcamp.users.Services.UserServices;
+import com.tekcamp.users.Shared.Utils;
 import com.tekcamp.users.dao.UserRepository;
 
 @Service
 public class UserServiceImplementation implements UserServices {
 
 	private UserRepository userRepository;
+	private Utils utils; 
 
-	public UserServiceImplementation(UserRepository userRepository) {
+	public UserServiceImplementation(UserRepository userRepository, Utils utils) {
 		this.userRepository = userRepository;
+		this.utils = utils; 
 	}
 
 	@Override
@@ -44,8 +49,20 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public void createUser(User user) {
-		userRepository.save(user); 
+	public UserDto createUser(UserDto userDto) {
+		User user = new User(); 
+		BeanUtils.copyProperties(userDto, user);
+		
+		user.setEncryptedPassword("password-test"); // how to encrypt password ? 
+		user.setEmailVerification(true);            // how to verify the email ?
+		user.setUserId(utils.generateUserId(20)); 
+		
+		User createdUser = userRepository.save(user);
+		
+		UserDto returnUser = new UserDto(); 
+		BeanUtils.copyProperties(createdUser, returnUser);
+		
+		return returnUser; 
 	}
 
 	@Override

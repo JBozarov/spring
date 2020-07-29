@@ -1,7 +1,10 @@
 package com.tekcamp.users.Controller;
+import com.tekcamp.users.Model.Request.UserRequest;
+import com.tekcamp.users.Model.Response.UserResponse;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tekcamp.users.Dto.UserDto;
 import com.tekcamp.users.Model.User;
 import com.tekcamp.users.Services.UserServices; 
 
@@ -23,6 +27,19 @@ public class UserController {
 	
 	public UserController(UserServices userService) {
 		this.userService = userService;
+	}
+	
+	@PostMapping
+	public UserResponse createUser(@RequestBody UserRequest userRequest) {
+		UserDto userDto = new UserDto(); 
+		BeanUtils.copyProperties(userRequest, userDto);
+		
+		UserDto createdUser = userService.createUser(userDto); 
+		
+		UserResponse returnUser = new UserResponse(); 
+		BeanUtils.copyProperties(createdUser, returnUser);
+		
+		return returnUser; 
 	}
 
 	@GetMapping
@@ -39,10 +56,6 @@ public class UserController {
 		return oneUser; 
 	}
 	
-	@PostMapping
-	public void createUser(@RequestBody User user) {
-		userService.createUser(user); 
-	}
 	
 	@PutMapping
 	public void updateUser(@RequestBody User user) {

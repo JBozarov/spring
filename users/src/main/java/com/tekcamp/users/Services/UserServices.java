@@ -2,6 +2,7 @@ package com.tekcamp.users.Services;
 
 import java.util.List;
 
+import com.tekcamp.users.Dto.UserDto;
 import com.tekcamp.users.Model.User;
 
 public interface UserServices {
@@ -10,7 +11,7 @@ public interface UserServices {
 
 	User getUserById(Long id);
 
-	void createUser(User user);
+	UserDto createUser(UserDto userDto);
 
 	void updateUser(User user);
 

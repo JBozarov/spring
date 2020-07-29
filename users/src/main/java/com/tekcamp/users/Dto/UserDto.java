@@ -1,48 +1,36 @@
-package com.tekcamp.users.Model;
+package com.tekcamp.users.Dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+public class UserDto {
 
-@Entity
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id; 
-	
 	private String userId; 
-	
-	@Column(nullable = false)
 	private String first_name;
-	
-	@Column(nullable = false)
 	private String last_name; 
-	
-	@Column(nullable = false, unique = true)
 	private String email;
-	
+	private String password;
 	private String encryptedPassword; 
-	private boolean emailVerification; 
+	private boolean emailVerification;
 	
-	public User() {
+	public UserDto() {
 	}
 
-	public User(String userId, String first_name, String last_name, String email, String encryptedPassword, boolean emailVerification) {
-		this.userId = userId; 
+	public UserDto(Long id, String userId, String first_name, String last_name, String email, String password,
+			String encryptedPassword, boolean emailVerification) {
+		this.id = id;
+		this.userId = userId;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.email = email;
+		this.password = password;
 		this.encryptedPassword = encryptedPassword;
-		this.emailVerification = emailVerification; 
+		this.emailVerification = emailVerification;
 	}
 
+	
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getUserId() {
 		return userId;
 	}
@@ -75,6 +63,14 @@ public class User {
 		this.email = email;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getEncryptedPassword() {
 		return encryptedPassword;
 	}
@@ -89,9 +85,7 @@ public class User {
 
 	public void setEmailVerification(boolean emailVerification) {
 		this.emailVerification = emailVerification;
-	}
-
-	
+	} 
 	
 	
 }
