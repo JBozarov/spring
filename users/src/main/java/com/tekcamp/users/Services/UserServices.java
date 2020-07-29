@@ -6,14 +6,16 @@ import com.tekcamp.users.Model.User;
 
 public interface UserServices {
 
-	List<User> getAllUsers();
+	List<User> getAllUsers(int page, int limit);
 
-	User getOneUser(Long id);
+	User getUserById(Long id);
 
 	void createUser(User user);
 
 	void updateUser(User user);
 
 	void deleteUser(Long id);
+
+	User getUserByEmail(String email);
 
 }

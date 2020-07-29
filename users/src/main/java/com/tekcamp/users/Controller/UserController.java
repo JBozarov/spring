@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tekcamp.users.Model.User;
@@ -16,23 +17,25 @@ import com.tekcamp.users.Services.UserServices;
 
 @RestController
 @RequestMapping("users")
-public class UserContoller {
+public class UserController {
 
 	private UserServices userService; 
 	
-	public UserContoller(UserServices userService) {
+	public UserController(UserServices userService) {
 		this.userService = userService;
 	}
 
 	@GetMapping
-	public List<User> getAllUsers() {
-		List<User> users = userService.getAllUsers();
+	public List<User> getAllUsers(
+			@RequestParam(value="page", defaultValue = "1") int page, 
+			@RequestParam(value="limit", defaultValue="5") int limit) {
+		List<User> users = userService.getAllUsers(page, limit);
 		return users; 
 	}
 	
 	@GetMapping(path="/{id}")
-	public User getSingleUser(@PathVariable Long id) {
-		User oneUser = userService.getOneUser(id); 
+	public User getUserById(@PathVariable Long id) {
+		User oneUser = userService.getUserById(id); 
 		return oneUser; 
 	}
 	
@@ -49,6 +52,12 @@ public class UserContoller {
 	@DeleteMapping(path="/{id}")
 	public void deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id); 
+	}
+	
+	@GetMapping(path="/email/{email}")
+	public User getUserByEmail(@PathVariable String email) {
+		User oneUser = userService.getUserByEmail(email);
+		return oneUser; 
 	}
 	
 }

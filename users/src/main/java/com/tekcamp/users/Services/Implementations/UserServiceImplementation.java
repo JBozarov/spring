@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.tekcamp.users.Model.User;
@@ -20,13 +22,22 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public List<User> getAllUsers() {
-		ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-		return users;
+	public List<User> getAllUsers(int page, int limit) {
+		
+		List<User> returnValue; 
+		
+		if (page>0) page --; 
+		PageRequest pageableRequest = PageRequest.of(page, limit); 
+		
+		Page<User> userPage =  userRepository.findAll(pageableRequest);
+		
+		returnValue = userPage.getContent();
+		
+		return returnValue;
 	}
 
 	@Override
-	public User getOneUser(Long id) {
+	public User getUserById(Long id) {
 		Optional<User> optionalUser = userRepository.findById(id); 
 		User user = optionalUser.get(); 
 		return user;
@@ -50,6 +61,14 @@ public class UserServiceImplementation implements UserServices {
 	@Override
 	public void deleteUser(Long id) {
 		userRepository.deleteById(id);
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		User returnUser = userRepository.findByEmail(email); 
+		return returnUser; 
 	} 
+	
+	
 	
 }
