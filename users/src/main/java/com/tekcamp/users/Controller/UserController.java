@@ -93,9 +93,11 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/email/{email}")
-	public User getUserByEmail(@PathVariable String email) {
-		User oneUser = userService.getUserByEmail(email);
-		return oneUser; 
+	public UserResponse getUserByEmail(@PathVariable String email) {
+		UserDto userDto = userService.getUserByEmail(email);
+		UserResponse returnValue = new UserResponse(); 
+		BeanUtils.copyProperties(userDto, returnValue);
+		return returnValue; 
 	}
 	
 }
