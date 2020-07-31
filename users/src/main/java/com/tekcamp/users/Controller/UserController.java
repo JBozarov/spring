@@ -71,15 +71,25 @@ public class UserController {
 		return returnValue; 
 	}
 	
-	
-	@PutMapping
-	public void updateUser(@RequestBody User user) {
-		userService.updateUser(user); 
+
+	@PutMapping(path="/{userId}")
+	public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable String userId) {
+		UserDto userDto = new UserDto(); 
+		BeanUtils.copyProperties(userRequest, userDto);
+		System.out.println("LINE ONE " + userDto.getUserId());
+		userDto.setUserId(userId);
+		System.out.println("LINE TWO " + userDto.getUserId());
+		UserDto updatedUserDto = userService.updateUser(userDto); 
+		
+		UserResponse returnValue = new UserResponse(); 
+		BeanUtils.copyProperties(updatedUserDto, returnValue);
+		
+		return returnValue; 
 	}
 	
-	@DeleteMapping(path="/{id}")
-	public void deleteUser(@PathVariable Long id) {
-		userService.deleteUser(id); 
+	@DeleteMapping(path="/{userId}")
+	public void deleteUser(@PathVariable String userId) {
+		userService.deleteUser(userId); 
 	}
 	
 	@GetMapping(path="/email/{email}")

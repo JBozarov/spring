@@ -77,18 +77,19 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public void updateUser(User user) {
-		ArrayList<User> users = (ArrayList<User>) userRepository.findAll(); 
-		for (int i = 0; i<users.size(); i++ ) {
-			if (users.get(i).getId() == user.getId()) {
-				userRepository.save(user); 
-			}
-		}
+	public UserDto updateUser(UserDto userDto) {	
+		User foundUser = userRepository.findByUserId(userDto.getUserId()); 
+		BeanUtils.copyProperties(userDto, foundUser);	
+		User updatedUser = userRepository.save(foundUser); 
+
+		UserDto returnValue = new UserDto(); 
+		BeanUtils.copyProperties(updatedUser, returnValue);
+		return returnValue;
 	}
 
 	@Override
-	public void deleteUser(Long id) {
-		userRepository.deleteById(id);
+	public void deleteUser(String userId) {
+		userRepository.deleteByUserId(userId);
 	}
 
 	@Override

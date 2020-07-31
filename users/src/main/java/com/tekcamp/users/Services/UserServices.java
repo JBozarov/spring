@@ -13,9 +13,9 @@ public interface UserServices {
 
 	UserDto createUser(UserDto userDto);
 
-	void updateUser(User user);
+	UserDto updateUser(UserDto userDto);
 
-	void deleteUser(Long id);
+	void deleteUser(String userId);
 
 	User getUserByEmail(String email);
 
