@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +52,11 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public User getUserById(Long id) {
-		Optional<User> optionalUser = userRepository.findById(id); 
-		User user = optionalUser.get(); 
-		return user;
+	public UserDto getUserByUserId(String userId) {
+		User user = userRepository.findByUserId(userId); 
+		UserDto returnValue = new UserDto(); 
+		BeanUtils.copyProperties(user, returnValue);
+		return returnValue;
 	}
 
 	@Override
@@ -97,6 +97,7 @@ public class UserServiceImplementation implements UserServices {
 		return returnUser; 
 	} 
 	
+
 	
 	
 }

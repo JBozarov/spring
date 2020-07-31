@@ -2,8 +2,6 @@ package com.tekcamp.users.Services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 import com.tekcamp.users.Dto.UserDto;
 import com.tekcamp.users.Model.User;
 
@@ -11,7 +9,7 @@ public interface UserServices {
 
 	List<UserDto> getAllUsers(int page, int limit);
 
-	User getUserById(Long id);
+	UserDto getUserByUserId(String userId);
 
 	UserDto createUser(UserDto userDto);
 
