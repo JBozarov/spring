@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tekcamp.users.Dto.UserDto;
+import com.tekcamp.users.Exceptions.UserNotFoundException;
 import com.tekcamp.users.Model.User;
 import com.tekcamp.users.Model.Request.UserRequest;
 import com.tekcamp.users.Model.Response.UserResponse;
@@ -67,6 +68,11 @@ public class UserController {
 	public UserResponse getUserByUserId(@PathVariable String userId) {
 		UserDto singleUserDto = userService.getUserByUserId(userId); 
 		UserResponse returnValue = new UserResponse(); 
+		
+//			if (returnValue.getUserId()==null) {
+//				throw new UserNotFoundException(singleUserDto.getFirst_name(), " not found"); 
+//
+//			}
 		BeanUtils.copyProperties(singleUserDto, returnValue);
 		return returnValue; 
 	}
@@ -76,9 +82,9 @@ public class UserController {
 	public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable String userId) {
 		UserDto userDto = new UserDto(); 
 		BeanUtils.copyProperties(userRequest, userDto);
-		System.out.println("LINE ONE " + userDto.getUserId());
+		
 		userDto.setUserId(userId);
-		System.out.println("LINE TWO " + userDto.getUserId());
+		
 		UserDto updatedUserDto = userService.updateUser(userDto); 
 		
 		UserResponse returnValue = new UserResponse(); 

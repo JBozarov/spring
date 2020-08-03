@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.tekcamp.users.Dto.UserDto;
+import com.tekcamp.users.Exceptions.UserNotFoundException;
 import com.tekcamp.users.Model.User;
 import com.tekcamp.users.Services.UserServices;
 import com.tekcamp.users.Shared.Utils;
@@ -53,10 +54,17 @@ public class UserServiceImplementation implements UserServices {
 
 	@Override
 	public UserDto getUserByUserId(String userId) {
-		User user = userRepository.findByUserId(userId); 
 		UserDto returnValue = new UserDto(); 
-		BeanUtils.copyProperties(user, returnValue);
-		return returnValue;
+		User user;
+		
+		if (userRepository.findByUserId(userId) != null) {
+			user = userRepository.findByUserId(userId); 
+			BeanUtils.copyProperties(user, returnValue);
+			return returnValue;
+		} else {
+			throw new UserNotFoundException(userId, " not found");
+		}
+		
 	}
 
 	@Override
